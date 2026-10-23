@@ -1,0 +1,51 @@
+BREADSTORE VERSION 2 — UPGRADE YOUR EXISTING PROJECT
+====================================================
+
+You already have the older BreadStore running. THIS UPGRADE KEEPS ITS DATA.
+
+CURRENT PROJECT LOCATION (based on your previous screenshots):
+D:\BreadStore-Inventory-System\BreadStore-Inventory
+
+BEFORE UPGRADING:
+1. Stop the existing running website in the VS Code terminal: Ctrl + C.
+2. IMPORTANT: Back up your database file by copying:
+   data\breadstore.db
+   to a safe folder such as Desktop\BreadStore-backup.db.
+3. Keep the existing .env file too (it contains your configuration).
+4. Extract this upgraded ZIP to a DIFFERENT temporary location, e.g. Downloads.
+5. Open the new BreadStore-Inventory folder and COPY ALL ITS CONTENTS into
+   your old D:\BreadStore-Inventory-System\BreadStore-Inventory folder.
+   Allow Windows to replace source files when asked.
+   The new ZIP does not contain .env or data\breadstore.db, so your old
+   database and login settings should remain untouched.
+6. Open the old project folder in VS Code. Open Terminal > New Terminal.
+7. Your previous Python virtual environment was one folder ABOVE your project.
+   From PS D:\BreadStore-Inventory-System\BreadStore-Inventory> run:
+
+   ..\.venv\Scripts\python.exe -m pip install -r requirements.txt
+   ..\.venv\Scripts\python.exe -m uvicorn app:app --reload
+
+8. Open ADMIN dashboard: http://127.0.0.1:8000/
+   Open CUSTOMER shop:  http://127.0.0.1:8000/shop
+
+9. Login to admin with your EXISTING email/password.
+   Customer registration is separate; sign up using the storefront Sign in button.
+
+WHAT CHANGES IN THE DATABASE?
+- The first server run automatically adds these new tables if missing:
+  customers, customer_sessions, customer_orders, customer_order_items.
+- It does NOT erase or reset the existing products, sales or your admin password.
+- Online orders reserve stock when submitted.
+- Admin can mark Preparing > Ready > Completed and reports count the sale
+  when admin confirms pickup/payment.
+- Cancellation returns reserved inventory.
+
+COMMON PROBLEMS
+- If browser says site unavailable: check that uvicorn terminal says
+  'Application startup complete'.
+- If port 8000 is busy: stop the old server using Ctrl+C.
+- If new pages do not appear: ensure you copied the NEW app.py,
+  customer_routes.py, static\shop.*, static\app.js and static\index.html.
+- If old data is missing: STOP and check your original .env DB_PATH and
+  whether data\breadstore.db exists in the OLD folder. Restore your backup.
+- Never upload your real database or .env to a public GitHub repository.

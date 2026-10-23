@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="utf-8"/>
+ <meta name="viewport" content="width=device-width, initial-scale=1"/>
+ <meta name="theme-color" content="#fbf9f5"/>
+ <meta name="description" content="BreadStore — a modern breadshop inventory and point-of-sale application."/>
+ <title>BreadStore — Bakery Management</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com"/>
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+ <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+ <!-- Bootstrap is included as requested by the portfolio guidelines; custom styles work offline. -->
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+ <link rel="stylesheet" href="/static/style.css"/>
+ <script src="/static/app.js" defer></script>
+</head>
+<body>
+ <div id="loginScreen" class="login-screen">
+  <div class="login-frame">
+   <div class="login-art">
+    <div class="login-brand"><span class="brand-mark">✳</span><span>bread<span class="brand-em">store</span><small>BAKERY MANAGEMENT</small></span></div>
+    <div class="login-art-middle"><div class="art-label">MADE FOR BAKERS, BY DESIGN</div><h2>Fresh bread.<br/>Fresh perspective.</h2><p>A simpler, smarter way to keep your bakery running beautifully — all in one place.</p><img class="bread-illustration" src="/static/bread-art.svg" alt="Illustration of a freshly baked loaf of bread"/></div>
+    <div class="login-art-bottom"><span class="art-orbit">✦</span> Your little bakery, organized with care.</div>
+   </div>
+   <div class="login-panel">
+    <div class="mobile-brand"><span class="brand-mark">✳</span><b>breadstore</b></div>
+    <div class="login-form-container">
+     <div class="login-icon">🍞</div>
+     <div class="eyebrow">WELCOME BACK</div>
+     <h1>Good to have<br/>you back.</h1>
+     <p class="login-description">Sign in to get a fresh look at your bakery.</p>
+     <form id="loginForm">
+      <label for="loginEmail">Email address</label>
+      <input id="loginEmail" class="field" type="email" name="email" value="admin@breadstore.local" autocomplete="username" required/>
+      <label for="loginPassword">Password</label>
+      <div class="password-wrap"><input id="loginPassword" class="field" type="password" name="password" placeholder="Enter your password" autocomplete="current-password" required/><button type="button" id="showPassword" aria-label="Show password">Show</button></div>
+      <p id="loginError" role="alert" class="login-error" hidden></p>
+      <button id="loginButton" class="btn-primary-full" type="submit">Sign in to dashboard <span>→</span></button>
+     </form>
+     <div class="login-help">🔒 Private admin access · Protected inventory data</div>
+     <p class="login-foot"><a href="/shop" style="color:#356848;font-weight:800">Visit the customer bread shop →</a></p>
+     <p class="login-foot">First-time login? Your admin password appears in the terminal when the server starts, unless you set <code>ADMIN_PASSWORD</code> in <code>.env</code> first.</p>
+    </div>
+   </div>
+  </div>
+ </div>
+ <div id="appShell" class="app-shell" hidden>
+  <aside id="sidebar" class="sidebar">
+   <a class="main-brand" href="#dashboard" data-view="dashboard"><span class="brand-mark">✳</span><span>bread<span class="brand-em">store</span><small>BAKERY MANAGEMENT</small></span></a>
+   <div class="side-section-label">WORKSPACE</div>
+   <nav id="sideNav" aria-label="Main navigation">
+    <a href="#dashboard" data-view="dashboard" class="side-link active"><svg class="ico"><use href="/static/icons.svg#dashboard"/></svg>Overview</a>
+    <a href="#inventory" data-view="inventory" class="side-link"><svg class="ico"><use href="/static/icons.svg#box"/></svg>Products & Inventory</a>
+    <a href="#pos" data-view="pos" class="side-link"><svg class="ico"><use href="/static/icons.svg#bag"/></svg>Point of Sale</a>
+    <a href="#orders" data-view="orders" class="side-link"><svg class="ico"><use href="/static/icons.svg#receipt"/></svg>Customer Orders</a>
+    <a href="#movements" data-view="movements" class="side-link"><svg class="ico"><use href="/static/icons.svg#activity"/></svg>Stock Activity</a>
+    <a href="#reports" data-view="reports" class="side-link"><svg class="ico"><use href="/static/icons.svg#chart"/></svg>Reports & Insights</a>
+   </nav>
+   <div class="side-section-label manage-label">MANAGE</div>
+   <nav aria-label="Preferences"><a href="/shop" class="side-link"><svg class="ico"><use href="/static/icons.svg#bag"/></svg>Customer storefront ↗</a><a href="#settings" data-view="settings" class="side-link"><svg class="ico"><use href="/static/icons.svg#settings"/></svg>Settings</a></nav>
+   <div class="side-spacer"></div>
+   <div class="side-note"><span class="note-sparkle">✳</span><b>Little things add up.</b><p>Stay on top of stock, track every sale, and keep things fresh.</p><button data-view="reports" class="note-link">View insights <span>→</span></button></div>
+   <div class="sidebar-footer"><div class="avatar">A</div><div class="user-data"><b id="sideUser">Administrator</b><small>Store administrator</small></div><button id="logoutBtn" aria-label="Sign out" title="Sign out"><svg class="ico"><use href="/static/icons.svg#logout"/></svg></button></div>
+  </aside>
+  <div class="main-shell">
+   <header class="topbar"><div class="top-left"><button id="menuToggle" class="icon-btn menu-toggle" title="Open menu"><svg class="ico"><use href="/static/icons.svg#menu"/></svg></button><span class="breadcrumb-main">Workspace</span><span class="breadcrumb-sep">/</span><span id="breadcrumbCurrent">Overview</span></div><div class="top-actions"><span class="today-date" id="todayDate"></span><span class="top-divider"></span><button class="top-avatar" data-view="settings" title="Account settings">A</button></div></header>
+   <main id="mainContent" class="main-content" tabindex="-1" aria-live="polite"><div class="loading-screen"><div class="spinner"></div> Preparing your bakery...</div></main>
+  </div>
+ </div>
+ <div id="modalRoot"></div>
+ <div id="toastRoot" class="toast-root" aria-live="polite"></div>
+</body>
+</html>

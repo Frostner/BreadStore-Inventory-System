@@ -1,0 +1,11 @@
+BREADSTORE COMPLETE — BOTH WEBSITES IN ONE FOLDER
+================================================
+1. On Windows, double-click START_BREADSTORE.bat.
+2. Wait for "Application startup complete" and keep that window running.
+3. Open ADMIN:    http://127.0.0.1:8000/
+         CUSTOMER: http://127.0.0.1:8000/shop
+4. If starting fresh, look for your one-time admin login in the black window.
+   If your old database exists at the previous D: drive path, it is copied
+   automatically and your old admin login should still work.
+
+For details, read READ_ME_FIRST.txt.
