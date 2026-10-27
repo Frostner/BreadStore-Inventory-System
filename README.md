@@ -272,9 +272,13 @@ Add cashier/manager roles, supplier purchase orders, barcode scanning, printable
 - Admin and customer functionality testing
 - Project documentation
 
-**GitHub Repository:** To be added
+**GitHub Repository:** https://github.com/Frostner/BreadStore-Inventory-System
 
-**Live Website:** Not yet deployed
+**Live Website:** https://golden-crust-demo.onrender.com
+
+**Admin Dashboard:** https://golden-crust-demo.onrender.com/
+
+**Customer Website:** https://golden-crust-demo.onrender.com/shop
 
 **AI Assistance:** AI tools were used during development.
 The system was tested and verified locally.
