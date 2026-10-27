@@ -34,15 +34,15 @@ Development for our BSIT Industry-Ready Portfolio.
 
 ## 1. Project title
 
-**BreadStore: Bakery Inventory, Sales and Customer Pickup Ordering System**
+**GoldenCrust: Bakery Inventory, Sales and Customer Pickup Ordering System**
 
 ## 2. Project overview
 
-BreadStore helps a bakery owner or cashier record their products, monitor inventory, process customer sales, and understand which breads need replenishment. Unlike a static website, it has a **real SQLite database** stored at `data/breadstore.db`, keeping data between server restarts.
+GoldenCrust helps a bakery owner or cashier record their products, monitor inventory, process customer sales, and understand which breads need replenishment. Unlike a static website, it has a **real SQLite database** stored at `data/breadstore.db`, keeping data between server restarts.
 
 ## 3. Problem statement
 
-Small bakeries may keep stock and sales records in notebooks or separate spreadsheets. Manual tracking can lead to inventory discrepancies, duplicated product records, missed low-stock items, and difficulty reviewing revenue and best-selling products. BreadStore provides one consistent system for these tasks.
+Small bakeries may keep stock and sales records in notebooks or separate spreadsheets. Manual tracking can lead to inventory discrepancies, duplicated product records, missed low-stock items, and difficulty reviewing revenue and best-selling products. GoldenCrust provides one consistent system for these tasks.
 
 ## 4. Objectives
 
@@ -253,7 +253,7 @@ Add cashier/manager roles, supplier purchase orders, barcode scanning, printable
 
 ## 16. Developer and Contributors
 
-**Project:** BreadStore Inventory and Customer Ordering System
+**Project:** GoldenCrust Inventory and Customer Ordering System
 
 **Project Developer:** [FERICK N. CORTIZO]
 
@@ -267,7 +267,7 @@ Add cashier/manager roles, supplier purchase orders, barcode scanning, printable
 - [CYRUS HARVEY VICENTE]
 
 **My Contribution:**
-- BreadStore system development and testing
+- GoldenCrust system development and testing
 - Database integration and verification
 - Admin and customer functionality testing
 - Project documentation
