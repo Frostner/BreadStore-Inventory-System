@@ -1,8 +1,23 @@
-# BreadStore — Bakery Inventory, Point of Sale & Customer Ordering System
+# Golden Crust — Bakery Inventory, Point of Sale & Customer Ordering System
 
 ![Dashboard preview](docs/screenshots/dashboard.png)
 
-A standalone **web-based inventory, point-of-sale, and customer pickup ordering application for a small bakery**. Includes a functional SQL database, admin authentication, product management, stock movements, sales transactions, reports, and explainable reorder suggestions. Designed as **Project 1: Web/Application Development** evidence for a BSIT portfolio. This is **not** a portfolio website.
+Golden Crust is a web-based Bakery Inventory, Point of Sale,
+and Customer Ordering Management System designed to help
+small bakery businesses manage their daily operations.
+
+The system provides two interfaces: an Admin Dashboard
+for managing products, inventory, sales, customer orders,
+and reports, and a Customer Website where users can browse
+bread products, register, log in, and place pickup orders.
+
+Developed using Python, FastAPI, SQLite, HTML, CSS,
+JavaScript, and Bootstrap, the system demonstrates
+database integration, CRUD operations, authentication,
+validation, and web application development.
+
+This project serves as Project 1: Web/Application
+Development for our BSIT Industry-Ready Portfolio.
 
 > **Status:** Local runnable project with integration tests. **Not yet publicly deployed.** Screenshots show example demonstration data, not a real operating business.
 
