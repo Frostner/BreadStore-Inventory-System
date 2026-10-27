@@ -2,24 +2,32 @@
 <html lang="en">
 <head>
  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
- <meta name="theme-color" content="#fcf8f1"><meta name="description" content="Browse bakery-fresh bread and order for pickup at BreadStore.">
- <title>BreadStore — Fresh bread, made for your day</title>
+ <meta name="theme-color" content="#fcf8f1"><meta name="description" content="Browse bakery-fresh bread and order for pickup at Golden Crust.">
+ <title>Golden Crust — Fresh bread, made for your day</title>
  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
- <link rel="stylesheet" href="/static/shop.css"><script src="/static/shop.js" defer></script>
+ <link rel="stylesheet" href="/static/shop.css?v=goldencrust-hero2"><script src="/static/shop.js" defer></script>
 </head>
 <body>
  <div class="announcement">✳ Freshly baked, thoughtfully made. Order online and pick up at the counter.</div>
  <header class="shop-topbar">
-  <a href="/shop" class="shop-logo" aria-label="BreadStore home"><span class="logo-mark">✳</span><span>bread<span class="logo-thin">store</span><small>FRESH FROM THE OVEN</small></span></a>
+  <a href="/shop" class="shop-logo" aria-label="Golden Crust home"><span class="logo-mark">✳</span><span>Golden <span class="logo-thin">Crust</span><small>FRESH FROM THE OVEN</small></span></a>
   <nav class="shop-links" aria-label="Store navigation"><a href="#menu">Our breads</a><a href="#how-it-works">How it works</a><button type="button" id="ordersLink">My orders</button></nav>
   <div class="shop-user-actions"><button class="account-btn" id="accountBtn" type="button">Sign in</button><button class="cart-btn" id="cartToggle" type="button">🛒 <span>Basket</span> <b id="cartCount">0</b></button></div>
  </header>
  <main>
   <section class="shop-hero">
    <div class="hero-copy"><span class="eyebrow"><span class="sunburst">✳</span> YOUR NEIGHBORHOOD BAKERY, ONLINE</span><h1>Good bread.<br><em>Better mornings.</em></h1><p>From soft, warm pandesal to buttery pastries, your favorites are just a few clicks away. Browse, order, and pick up fresh.</p><div class="hero-actions"><a class="hero-cta" href="#menu">Explore the menu <span>↗</span></a><span class="pickup-note">✳ Easy counter pickup</span></div></div>
-   <div class="hero-art" aria-label="Illustrated bakery breads"><div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div><div class="art-main">🥐</div><div class="art-small art-slice">🍞</div><div class="art-small art-roll">🥖</div><div class="art-sticker">BAKED<br>WITH ♥<br><span>DAILY</span></div><span class="art-caption">A little joy in every bite.</span></div>
+   <div class="hero-art" aria-label="Freshly baked Golden Crust breads">
+    <div class="hero-orbit orbit-one"></div>
+    <div class="hero-orbit orbit-two"></div>
+    <img class="hero-photo hero-photo-main" src="/static/products/butter-croissant.jpg" alt="Fresh golden butter croissant" loading="eager" decoding="async" />
+    <img class="hero-photo hero-photo-left" src="/static/products/milk-bread-loaf.jpg" alt="Freshly baked sliced milk bread loaf" loading="eager" decoding="async" />
+    <img class="hero-photo hero-photo-right" src="/static/products/garlic-baguette.jpg" alt="Golden garlic baguette with herbs" loading="eager" decoding="async" />
+    <div class="art-sticker">BAKED<br>WITH ♥<br><span>DAILY</span></div>
+    <span class="art-caption">A little joy in every bite.</span>
+   </div>
   </section>
   <div class="benefits"><div><span>✳</span> Fresh selections, every day</div><div><span>♡</span> Made for the little moments</div><div><span>◷</span> Order ahead, pick up easily</div></div>
   <section id="menu" class="menu-section"><div class="section-eyebrow">THE GOOD STUFF</div><div class="section-title-row"><div><h2>Something delicious<br><em>for everyone.</em></h2><p>Find your new favorite from our bakery shelf.</p></div><span id="productNumber" class="product-number">Loading bread...</span></div>
@@ -28,7 +36,7 @@
   </section>
   <section id="how-it-works" class="how-section"><div><div class="section-eyebrow">SIMPLE AS 1, 2, 3</div><h2>From our oven<br><em>to your hands.</em></h2></div><div class="steps"><div><b>01</b><h3>Choose your treats</h3><p>Add your favorite bread and pastries to your basket.</p></div><div><b>02</b><h3>Place your order</h3><p>Sign in, choose your pickup name, and submit your order.</p></div><div><b>03</b><h3>Pay on pickup</h3><p>Wait until your order is marked ready. Pay at the bakery counter.</p></div></div></section>
  </main>
- <footer class="shop-footer"><div><div class="shop-logo"><span class="logo-mark">✳</span><span>bread<span class="logo-thin">store</span><small>FRESH FROM THE OVEN</small></span></div><p>Good things take flour.</p></div><div><a href="#menu">Browse products</a><a href="/">Staff / Admin</a></div><small>© BreadStore · Portfolio demonstration. No online payments are collected.</small></footer>
+ <footer class="shop-footer"><div><div class="shop-logo"><span class="logo-mark">✳</span><span>Golden <span class="logo-thin">Crust</span><small>FRESH FROM THE OVEN</small></span></div><p>Good things take flour.</p></div><div><a href="#menu">Browse products</a><a href="/">Staff / Admin</a></div><small>© Golden Crust · Portfolio demonstration. No online payments are collected.</small></footer>
  <div class="overlay" id="overlay" hidden></div>
  <aside class="basket" id="basket" aria-label="Shopping basket" aria-hidden="true"><div class="basket-top"><div><span class="section-eyebrow">YOUR GOODIES</span><h2>Your basket</h2></div><button type="button" class="close-icon" data-action="closeBasket" aria-label="Close basket">×</button></div><div class="basket-items" id="basketItems"></div><div class="basket-bottom"><div class="total-row"><span>Order total</span><strong id="basketTotal">₱0.00</strong></div><small>Payment is made at the bakery counter on pickup.</small><button id="placeOrderBtn" class="full-button" data-action="checkout" type="button">Continue to checkout →</button></div></aside>
  <div class="modal-underlay" id="modalUnderlay" hidden><section class="shop-modal" role="dialog" aria-modal="true" aria-label="Account and order details"><button class="close-icon modal-x" data-action="closeModal" type="button" aria-label="Close">×</button><div id="modalBody"></div></section></div>

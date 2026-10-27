@@ -1,17 +1,53 @@
-/* BreadStore — vanilla JavaScript frontend. All data comes from the real SQLite API. */
+/* Golden Crust — vanilla JavaScript frontend. All data comes from the real SQLite API. */
 'use strict';
 const state = { user:null,view:'dashboard', products:[],categories:[], search:'', category:'All',status:'All',sort:'name', posFilter:'All',posSearch:'',cart:{},reportDays:30 };
 const $ = sel => document.querySelector(sel);
 const currency = value => new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(value)||0);
 const compact = n => new Intl.NumberFormat('en-PH').format(Number(n)||0);
 const esc = v => String(v??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+// Golden Crust product photography — images are packaged with the website and work offline.
+const GC_PHOTOS_BY_SKU = {
+  'BRD-001':'classic-pandesal.jpg',
+  'BRD-002':'ube-cheese-pandesal.jpg',
+  'BRD-003':'spanish-bread.jpg',
+  'BRD-004':'cheese-roll.jpg',
+  'BRD-005':'ensaymada.jpg',
+  'BRD-006':'butter-croissant.jpg',
+  'BRD-007':'chocolate-croissant.jpg',
+  'BRD-008':'cinnamon-roll.jpg',
+  'BRD-009':'banana-bread-slice.jpg',
+  'BRD-010':'milk-bread-loaf.jpg',
+  'BRD-011':'sourdough-loaf.jpg',
+  'BRD-012':'garlic-baguette.jpg',
+  'BRD-013':'strawberry-danish.jpg',
+};
+const GC_PHOTOS_BY_NAME = {
+  'classic pandesal':'classic-pandesal.jpg',
+  'ube cheese pandesal':'ube-cheese-pandesal.jpg',
+  'spanish bread':'spanish-bread.jpg',
+  'cheese roll':'cheese-roll.jpg',
+  'ensaymada':'ensaymada.jpg',
+  'butter croissant':'butter-croissant.jpg',
+  'chocolate croissant':'chocolate-croissant.jpg',
+  'cinnamon roll':'cinnamon-roll.jpg',
+  'banana bread slice':'banana-bread-slice.jpg',
+  'milk bread loaf':'milk-bread-loaf.jpg',
+  'sourdough loaf':'sourdough-loaf.jpg',
+  'garlic baguette':'garlic-baguette.jpg',
+  'strawberry danish':'strawberry-danish.jpg',
+};
+const productPhoto = p => {
+ const sku=String(p?.sku||'').trim().toUpperCase();
+ const name=String(p?.name||'').trim().toLowerCase().replace(/\s+/g,' ');
+ return '/static/products/'+(GC_PHOTOS_BY_NAME[name]||GC_PHOTOS_BY_SKU[sku]||'default-bread.jpg');
+};
 const ic = (name,extra='') => `<svg class="ico ${extra}" aria-hidden="true"><use href="/static/icons.svg#${name}"/></svg>`;
 const friendlyDate = (value, options={month:'short',day:'numeric',year:'numeric'}) => {try{return new Date(String(value).replace(' ','T')).toLocaleDateString('en-PH',options)}catch{return value}};
 const friendlyTime = value => {try{return new Date(String(value).replace(' ','T')).toLocaleTimeString('en-PH',{hour:'numeric',minute:'2-digit'})}catch{return value}};
 const productEmoji = category => ({'Everyday Bread':'🥖','Pastries':'🥐','Sweet Treats':'🧁','Loaves':'🍞','Specialty Bread':'🥨'})[category] || '🥯';
 const emojiName = p => {const n=p.name.toLowerCase();if(n.includes('croissant'))return '🥐';if(n.includes('roll')||n.includes('ensaymada'))return '🥮';if(n.includes('strawberry'))return '🍓';if(n.includes('banana'))return '🍌';if(n.includes('ube'))return '🍠';if(n.includes('cinnamon'))return '🍥';if(n.includes('cheese'))return '🧀';return productEmoji(p.category)};
 const emojiTone = category => ({'Pastries':'pink','Sweet Treats':'peach','Loaves':'green','Specialty Bread':'blue'})[category] || '';
-const symbol = p => `<span class="product-symbol ${emojiTone(p.category)}" aria-hidden="true">${emojiName(p)}</span>`;
+const symbol = p => `<span class="product-symbol ${emojiTone(p.category)}" aria-hidden="true"><img src="${productPhoto(p)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='/static/products/default-bread.jpg'"></span>`;
 const statusBadge = status => `<span class="tag ${status==='In stock'?'healthy':status==='Low stock'?'low':status==='Out of stock'?'out':'archived'}">${esc(status)}</span>`;
 const onlyInt = v => Number.isInteger(+v) ? +v : NaN;
 
@@ -132,7 +168,7 @@ async function archiveProduct(id){const p=state.products.find(x=>x.id===id);if(!
 async function restoreProduct(id){try{await api(`/api/products/${id}/restore`,{method:'POST'});toast('Product restored.');await fetchInventoryRows()}catch(e){toast(e.message,true)}}
 
 async function pos(){const [result,sales]=await Promise.all([api('/api/products'),api('/api/sales?limit=6')]);if(state.view!=='pos')return;state.products=result.products;state.categories=result.categories;state.recentSales=sales.sales;renderPOS()}
-function posCard(p){const out=p.quantity===0;return `<button class="pos-card" ${out?'disabled':''} data-action="addCart" data-id="${p.id}"><div class="pos-image ${emojiTone(p.category)}">${emojiName(p)}</div><h4>${esc(p.name)}</h4><p>${out?'Sold out':`${p.quantity} ${esc(p.unit)} available`}</p><div class="pos-price"><strong>${currency(p.price)}</strong><span class="pos-add">+</span></div></button>`}
+function posCard(p){const out=p.quantity===0;return `<button class="pos-card" ${out?'disabled':''} data-action="addCart" data-id="${p.id}"><div class="pos-image ${emojiTone(p.category)}"><img src="${productPhoto(p)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='/static/products/default-bread.jpg'"></div><h4>${esc(p.name)}</h4><p>${out?'Sold out':`${p.quantity} ${esc(p.unit)} available`}</p><div class="pos-price"><strong>${currency(p.price)}</strong><span class="pos-add">+</span></div></button>`}
 function posCart(){const lines=Object.values(state.cart),subtotal=lines.reduce((a,x)=>a+x.price*x.qty,0);return `<div class="pos-cart-head"><h3>Current order <span class="pill-count">${lines.reduce((a,x)=>a+x.qty,0)}</span></h3><button class="text-link" data-action="clearCart" ${lines.length?'':'disabled'}>Clear all</button></div><div>${lines.length?lines.map(p=>`<div class="cart-line">${symbol(p)}<div class="cart-line-info"><b>${esc(p.name)}</b><small>${currency(p.price)} each</small></div><div class="cart-line-right"><strong>${currency(p.price*p.qty)}</strong><div class="qty-control"><button data-action="changeCart" data-id="${p.id}" data-delta="-1" aria-label="Decrease ${esc(p.name)}">−</button><span>${p.qty}</span><button data-action="changeCart" data-id="${p.id}" data-delta="1" aria-label="Increase ${esc(p.name)}">+</button></div></div></div>`).join(''):`<div class="cart-empty"><span>🧺</span><b>Your basket is empty</b><p>Add a product from the menu to start a new sale.</p></div>`}</div><div class="cart-footer"><div class="cart-subtotal"><span>Subtotal</span><b>${currency(subtotal)}</b></div><div class="cart-subtotal"><span>Additional fees</span><b>₱0.00</b></div><div class="cart-total"><span>Total</span><strong>${currency(subtotal)}</strong></div><button ${lines.length?'':'disabled'} data-action="checkout" class="action-btn cart-pay">Proceed to payment ${ic('arrow-right')}</button></div>`}
 function renderPOS(){
  const filtered=state.products.filter(p=>(state.posFilter==='All'||p.category===state.posFilter)&&(!state.posSearch||p.name.toLowerCase().includes(state.posSearch.toLowerCase())||p.sku.toLowerCase().includes(state.posSearch.toLowerCase())));

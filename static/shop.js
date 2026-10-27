@@ -3,6 +3,42 @@ const shop={products:[],category:'All treats',q:'',cart:{},customer:null,modal:n
 const el=s=>document.querySelector(s);
 const money=n=>new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP'}).format(n);
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// Golden Crust product photography — images are packaged with the website and work offline.
+const GC_PHOTOS_BY_SKU = {
+  'BRD-001':'classic-pandesal.jpg',
+  'BRD-002':'ube-cheese-pandesal.jpg',
+  'BRD-003':'spanish-bread.jpg',
+  'BRD-004':'cheese-roll.jpg',
+  'BRD-005':'ensaymada.jpg',
+  'BRD-006':'butter-croissant.jpg',
+  'BRD-007':'chocolate-croissant.jpg',
+  'BRD-008':'cinnamon-roll.jpg',
+  'BRD-009':'banana-bread-slice.jpg',
+  'BRD-010':'milk-bread-loaf.jpg',
+  'BRD-011':'sourdough-loaf.jpg',
+  'BRD-012':'garlic-baguette.jpg',
+  'BRD-013':'strawberry-danish.jpg',
+};
+const GC_PHOTOS_BY_NAME = {
+  'classic pandesal':'classic-pandesal.jpg',
+  'ube cheese pandesal':'ube-cheese-pandesal.jpg',
+  'spanish bread':'spanish-bread.jpg',
+  'cheese roll':'cheese-roll.jpg',
+  'ensaymada':'ensaymada.jpg',
+  'butter croissant':'butter-croissant.jpg',
+  'chocolate croissant':'chocolate-croissant.jpg',
+  'cinnamon roll':'cinnamon-roll.jpg',
+  'banana bread slice':'banana-bread-slice.jpg',
+  'milk bread loaf':'milk-bread-loaf.jpg',
+  'sourdough loaf':'sourdough-loaf.jpg',
+  'garlic baguette':'garlic-baguette.jpg',
+  'strawberry danish':'strawberry-danish.jpg',
+};
+const productPhoto = p => {
+ const sku=String(p?.sku||'').trim().toUpperCase();
+ const name=String(p?.name||'').trim().toLowerCase().replace(/\s+/g,' ');
+ return '/static/products/'+(GC_PHOTOS_BY_NAME[name]||GC_PHOTOS_BY_SKU[sku]||'default-bread.jpg');
+};
 const iconFor=p=>{const n=p.name.toLowerCase();if(n.includes('croissant'))return '🥐';if(n.includes('loaf')||n.includes('sourdough'))return '🍞';if(n.includes('ube'))return '🍠';if(n.includes('cheese'))return '🧀';if(n.includes('strawberry'))return '🍓';if(n.includes('banana'))return '🍌';if(n.includes('cinnamon'))return '🍥';if(n.includes('roll')||n.includes('ensaymada'))return '🥮';return '🥖'};
 async function req(url,opt={}){
  const resp=await fetch(url,{credentials:'same-origin',...opt,headers:{'X-Requested-With':'BreadStore',...(opt.body?{'Content-Type':'application/json'}:{}),...(opt.headers||{})}});
@@ -14,9 +50,9 @@ let toastTimer;function toast(msg){el('#shopToast').textContent=msg;el('#shopToa
 function refreshAccount(){el('#accountBtn').textContent=shop.customer?shop.customer.full_name.split(' ')[0]+' ▾':'Sign in'}
 async function loadProducts(){const res=await req('/api/shop/products');shop.products=res.products;renderCategories();renderProducts();renderCart()}
 function renderCategories(){const categories=['All treats',...new Set(shop.products.map(p=>p.category))];el('#categoryFilters').innerHTML=categories.map(c=>`<button class="chip ${shop.category===c?'active':''}" data-action="category" data-category="${safe(c)}">${safe(c)}</button>`).join('')}
-function renderProducts(){const rows=shop.products.filter(p=>(shop.category==='All treats'||p.category===shop.category)&&[p.name,p.category,p.sku].join(' ').toLowerCase().includes(shop.q));el('#productNumber').textContent=`${rows.length} fresh selections`;el('#productGrid').innerHTML=rows.map(p=>`<article class="product-card"><div class="product-picture"><span role="img" aria-label="Bread illustration">${iconFor(p)}</span>${p.stock<=0?'<b class="stock-label">Sold out</b>':p.stock<=10?'<b class="stock-label">Selling fast</b>':''}</div><div class="product-info"><span class="category-small">${safe(p.category)}</span><h3>${safe(p.name)}</h3><div class="product-bottom"><strong>${money(p.price)}</strong><button class="add-button" data-action="add" data-id="${p.id}" ${p.stock<1?'disabled':''}>${p.stock<1?'Unavailable':'+ Add'}</button></div></div></article>`).join('')||'<div class="empty-results">No breads match your search. Try another name.</div>'}
+function renderProducts(){const rows=shop.products.filter(p=>(shop.category==='All treats'||p.category===shop.category)&&[p.name,p.category,p.sku].join(' ').toLowerCase().includes(shop.q));el('#productNumber').textContent=`${rows.length} fresh selections`;el('#productGrid').innerHTML=rows.map(p=>`<article class="product-card"><div class="product-picture"><img src="${productPhoto(p)}" alt="${safe(p.name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/static/products/default-bread.jpg'">${p.stock<=0?'<b class="stock-label">Sold out</b>':p.stock<=10?'<b class="stock-label">Selling fast</b>':''}</div><div class="product-info"><span class="category-small">${safe(p.category)}</span><h3>${safe(p.name)}</h3><div class="product-bottom"><strong>${money(p.price)}</strong><button class="add-button" data-action="add" data-id="${p.id}" ${p.stock<1?'disabled':''}>${p.stock<1?'Unavailable':'+ Add'}</button></div></div></article>`).join('')||'<div class="empty-results">No breads match your search. Try another name.</div>'}
 function cartLines(){return Object.entries(shop.cart).map(([id,quantity])=>({p:shop.products.find(p=>p.id===Number(id)),quantity})).filter(o=>o.p&&o.quantity>0)}
-function renderCart(){const lines=cartLines();const total=lines.reduce((n,x)=>n+x.p.price*x.quantity,0);el('#cartCount').textContent=lines.reduce((n,x)=>n+x.quantity,0);el('#basketTotal').textContent=money(total);el('#basketItems').innerHTML=lines.length?lines.map(({p,quantity})=>`<div class="basket-row"><div class="basket-icon">${iconFor(p)}</div><div class="basket-details"><b>${safe(p.name)}</b><small>${money(p.price)} each · ${safe(p.unit)}</small><div class="basket-qty"><button data-action="minus" data-id="${p.id}" aria-label="Remove one ${safe(p.name)}">−</button><span>${quantity}</span><button data-action="plus" data-id="${p.id}" aria-label="Add one ${safe(p.name)}" ${quantity>=p.stock?'disabled':''}>+</button></div></div><b>${money(quantity*p.price)}</b></div>`).join(''):'<div class="empty-results">Your basket is waiting for something delicious. 🍞</div>';el('#placeOrderBtn').disabled=!lines.length}
+function renderCart(){const lines=cartLines();const total=lines.reduce((n,x)=>n+x.p.price*x.quantity,0);el('#cartCount').textContent=lines.reduce((n,x)=>n+x.quantity,0);el('#basketTotal').textContent=money(total);el('#basketItems').innerHTML=lines.length?lines.map(({p,quantity})=>`<div class="basket-row"><div class="basket-icon"><img src="${productPhoto(p)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='/static/products/default-bread.jpg'"></div><div class="basket-details"><b>${safe(p.name)}</b><small>${money(p.price)} each · ${safe(p.unit)}</small><div class="basket-qty"><button data-action="minus" data-id="${p.id}" aria-label="Remove one ${safe(p.name)}">−</button><span>${quantity}</span><button data-action="plus" data-id="${p.id}" aria-label="Add one ${safe(p.name)}" ${quantity>=p.stock?'disabled':''}>+</button></div></div><b>${money(quantity*p.price)}</b></div>`).join(''):'<div class="empty-results">Your basket is waiting for something delicious. 🍞</div>';el('#placeOrderBtn').disabled=!lines.length}
 function cartChange(id,delta){const p=shop.products.find(p=>p.id===id);if(!p)return;const next=(shop.cart[id]||0)+delta;if(next>p.stock){toast(`Only ${p.stock} available.`);return}if(next<=0)delete shop.cart[id];else shop.cart[id]=next;renderCart();if(delta>0)toast(`${p.name} added to basket`)}
 function openBasket(){el('#overlay').hidden=false;el('#basket').classList.add('open');el('#basket').setAttribute('aria-hidden','false')}
 function closeBasket(){el('#basket').classList.remove('open');el('#basket').setAttribute('aria-hidden','true');el('#overlay').hidden=true}
